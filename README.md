@@ -1,5 +1,3 @@
-# Тестовое задание - alertgroup
-
 ## Материалы для задания:
 ```
 •Ссылка на макет https://www.figma.com/file/2TUOTAHoirmQDSIOWOoAFW/FrontEnd-Site-Test?node-id=0%3A1
