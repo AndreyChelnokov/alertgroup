@@ -15,13 +15,14 @@
       <div class="apartment-item__price-square-meter">
         {{ pricePerSquareMeter }} р. за м <sup>2</sup>
       </div>
-      <button type="button" class="button apartment-item__button">Подробнее</button>
+      <AlertgroupButton :class-mode="'apartment-item__button'" :content="'Подробнее'" />
     </div>
   </div>
 </template>
 
 <script>
 // todo Окончания у числовых строк
+import AlertgroupButton from './AlertgroupButton.vue';
 
 export default {
   name: 'ApartmentItem',
@@ -36,24 +37,13 @@ export default {
       return new Intl.NumberFormat().format(Math.floor(this.apartment.price / this.apartment.square));
     },
   },
+  components: {
+    AlertgroupButton,
+  },
 };
 </script>
 
 <style lang="scss">
-  .button {
-    background-color: #70D24E;
-    border-radius: 5px;
-    border: none;
-    outline: none;
-    color: #fff;
-    font-size: 14px;
-    text-transform: uppercase;
-
-    &:hover {
-      background-color: #65bd46;
-    }
-  }
-
   .apartment-item {
     max-width: 270px;
     width: 100%;
@@ -61,7 +51,6 @@ export default {
     border-radius: 10px;
     padding: 0 15px;
     margin-top: 30px;
-    margin-right: 30px;
     background-color: #fff;
 
     overflow: hidden;
@@ -69,6 +58,10 @@ export default {
     max-height: 365px;
     display: flex;
     flex-direction: column;
+
+    &:not(:nth-child(4)) {
+      margin-right: 30px;
+    }
 
     &.active,
     &:hover {

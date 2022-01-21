@@ -30,6 +30,5 @@ export default {
   .apartment-list {
     display: flex;
     flex-wrap: wrap;
-    background-color: #F8F8F8;
   }
 </style>

@@ -25,8 +25,20 @@ export default new Vuex.Store({
   modules: {
   },
   getters: {
-    apartmentList(state) {
-      return state.apartmentList;
+    getListUniqueRooms(state) {
+      const rooms = state.apartmentList.map((apartment) => apartment.rooms);
+      const uniqueRooms = rooms.filter((e, i) => rooms.indexOf(e) === i);
+      return uniqueRooms.map((roomName) => {
+        return { name: roomName, isChecked: false };
+      });
+    },
+    getMaxValueByParams: (state) => (params) => {
+      if (state.apartmentList.length) {
+        return Math.max(...state.apartmentList.map((apartment) => apartment[params]));
+      }
+    },
+    getMinValueByParams: (state) => (params) => {
+      return Math.min(...state.apartmentList.map((apartment) => apartment[params]));
     },
   },
 });
