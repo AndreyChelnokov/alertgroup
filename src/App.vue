@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import FiltersBar from './components/filtersBar.vue';
+import FiltersBar from './components/FiltersBar.vue';
 import ApartmentList from './components/ApartmentList.vue';
 
 export default {

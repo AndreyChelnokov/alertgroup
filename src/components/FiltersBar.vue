@@ -1,21 +1,12 @@
 <template>
-  <form @submit.prevent="filter" class="filters-bar">
+  <form @submit.prevent="sendFilter" class="filters-bar">
 
     <FiltersItemWrap :class-name="'rooms'">
-      <template v-slot:title>
-        КОМНАТЫ
-      </template>
-      <div class="filters-item__content-checkbox">
-        <label v-for="room in rooms.uniqueList" :key="room.name" class="checkbox-item">
-          <input
-            class="checkbox-input"
-            type="checkbox"
-            v-model="room.isChecked"
-            name="room"
-            :value="room.name">
-          <span class="checkbox-span">{{ room.name }}k</span>
-        </label>
-      </div>
+      <template v-slot:title>КОМНАТЫ</template>
+      <FiltersItemCheckbox
+        :rooms-list="rooms.uniqueList"
+        @updateRooms="updateValueRooms"
+      />
     </FiltersItemWrap>
 
     <FiltersItemWrap :class-name="'floor'">
@@ -68,10 +59,11 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import roundToTheTenthOfANumber from '../utils';
+import { roundToTheTenthOfANumber } from '../utils';
 import AlertgroupButton from './AlertgroupButton.vue';
 import FiltersItemField from './FiltersItemFeild.vue';
 import FiltersItemWrap from './FiltersItemWrap.vue';
+import FiltersItemCheckbox from './FiltersItemCheckbox.vue';
 
 export default {
   name: 'filtersBar',
@@ -81,6 +73,7 @@ export default {
         uniqueList: [],
       },
       formValue: {
+        rooms: [],
         price: {
           min: '',
           max: '',
@@ -100,8 +93,11 @@ export default {
     updateValueFieldForm(prop) {
       this.formValue[prop.name][prop.mode] = prop.value;
     },
-    filter() {
-      console.log('filter - submit');
+    updateValueRooms(prop) {
+      this.formValue.rooms = prop.list;
+    },
+    sendFilter() {
+      this.$store.commit('SET_CURRENT_FILTERS', JSON.parse(JSON.stringify(this.formValue)));
     },
   },
   computed: {
@@ -134,6 +130,7 @@ export default {
     AlertgroupButton,
     FiltersItemField,
     FiltersItemWrap,
+    FiltersItemCheckbox,
   },
   watch: {
     variantsRooms(value) {

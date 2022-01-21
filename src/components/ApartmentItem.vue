@@ -3,7 +3,7 @@
     <div class="apartment-item__header">
       <div class="apartment-item__header_left">{{ apartment.floor }} этаж</div>
       <div class="apartment-item__header_right">
-        {{ apartment.rooms }} комната - {{ apartment.square }}м<sup>2</sup>
+        {{ apartment.rooms }} {{ sculptedRoomName }} - {{ apartment.square }}м<sup>2</sup>
       </div>
     </div>
     <div class="apartment-item__image-wrap image-wrap">
@@ -21,7 +21,7 @@
 </template>
 
 <script>
-// todo Окончания у числовых строк
+import { declOfNum } from '../utils';
 import AlertgroupButton from './AlertgroupButton.vue';
 
 export default {
@@ -34,8 +34,12 @@ export default {
       return new Intl.NumberFormat().format(this.apartment.price);
     },
     pricePerSquareMeter() {
-      return new Intl.NumberFormat().format(Math.floor(this.apartment.price / this.apartment.square));
+      const priceSquare = Math.floor(this.apartment.price / this.apartment.square);
+      return new Intl.NumberFormat().format(priceSquare);
     },
+    sculptedRoomName() {
+      return declOfNum(this.apartment.rooms, ['комната', 'комнаты', 'комнат']);
+    }
   },
   components: {
     AlertgroupButton,

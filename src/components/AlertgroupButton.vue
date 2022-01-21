@@ -14,6 +14,7 @@ export default {
     },
     typeButton: {
       type: String,
+      default: 'button',
     },
   },
 };

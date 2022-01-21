@@ -6,11 +6,14 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     apartmentList: [],
+    filters: {},
   },
   mutations: {
     SET_APARTMENTS_LIST(state, value) {
       state.apartmentList = value;
-      console.log('f', state.apartmentList);
+    },
+    SET_CURRENT_FILTERS(state, value) {
+      state.filters = value;
     },
   },
   actions: {
@@ -22,9 +25,44 @@ export default new Vuex.Store({
         .then((res) => context.commit('SET_APARTMENTS_LIST', res));
     },
   },
-  modules: {
-  },
   getters: {
+    getListApartment(state) {
+      let { apartmentList } = state;
+      const { filters } = state;
+
+      if (filters.floor) {
+        if (filters.floor.max) {
+          apartmentList = apartmentList.filter((apartment) => apartment.floor <= filters.floor.max);
+        }
+        if (filters.floor.min) {
+          apartmentList = apartmentList.filter((apartment) => apartment.floor >= filters.floor.min);
+        }
+      }
+
+      if (filters.price) {
+        if (filters.price.max) {
+          apartmentList = apartmentList.filter((apartment) => apartment.price / 1000000 <= filters.price.max);
+        }
+        if (filters.price.min) {
+          apartmentList = apartmentList.filter((apartment) => apartment.price / 1000000 >= filters.price.min);
+        }
+      }
+
+      if (filters.square) {
+        if (filters.square.max) {
+          apartmentList = apartmentList.filter((apartment) => apartment.square <= filters.square.max);
+        }
+        if (filters.square.min) {
+          apartmentList = apartmentList.filter((apartment) => apartment.square >= filters.square.min);
+        }
+      }
+
+      if (filters.rooms && filters.rooms.length) {
+        apartmentList = apartmentList.filter((apartment) => filters.rooms.indexOf(apartment.rooms) >= 0);
+      }
+
+      return apartmentList;
+    },
     getListUniqueRooms(state) {
       const rooms = state.apartmentList.map((apartment) => apartment.rooms);
       const uniqueRooms = rooms.filter((e, i) => rooms.indexOf(e) === i);

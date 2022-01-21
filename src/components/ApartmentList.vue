@@ -14,11 +14,14 @@ export default {
   name: 'ApartmentList',
   computed: {
     apartmentList() {
-      return this.$store.state.apartmentList;
+      return this.$store.getters.getListApartment;
     },
   },
   components: {
     ApartmentItem,
+  },
+  updateListApartments() {
+
   },
   mounted() {
     this.$store.dispatch('getApartmentList');

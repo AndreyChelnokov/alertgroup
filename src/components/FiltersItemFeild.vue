@@ -113,7 +113,7 @@ export default {
         display: flex;
         align-items: center;
 
-        margin-bottom: 17px;
+        margin-bottom: 16px;
       }
     }
   }
