@@ -1,5 +1,5 @@
 <template>
-  <button type="button" class="button" :class="classMode">{{ content }}</button>
+  <button :type="typeButton" class="button" :class="classMode">{{ content }}</button>
 </template>
 
 <script>
@@ -10,6 +10,9 @@ export default {
       type: String,
     },
     content: {
+      type: String,
+    },
+    typeButton: {
       type: String,
     },
   },
@@ -23,6 +26,7 @@ export default {
     border: none;
     outline: none;
     color: #fff;
+    font-weight: 700;
     font-size: 14px;
     text-transform: uppercase;
 

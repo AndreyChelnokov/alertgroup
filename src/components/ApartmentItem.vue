@@ -59,7 +59,7 @@ export default {
     display: flex;
     flex-direction: column;
 
-    &:not(:nth-child(4)) {
+    &:not(:nth-child(4n)) {
       margin-right: 30px;
     }
 

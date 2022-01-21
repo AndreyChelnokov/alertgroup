@@ -1,23 +1,35 @@
 <template>
-  <div class="filters-bar__item filters-item" :class="className">
-    <div class="filters-bar__item-title filters-item__title">{{ title }}</div>
-    <div class="filters-item__content">
-      <div class="filters-item__content-inputs">
-        <input class="filters-item__input" type="number" @input="updateKey" :min="min" v-model="valueMinField" name="">
-        <span class="filters-item__input-center"></span>
-        <input class="filters-item__input" type="number" @input="updateKey" :max="max" v-model="valueMaxField" name="">
-      </div>
+  <div class="">
+    <div class="filters-item__content-inputs">
+      <input
+        class="filters-item__input"
+        :step="step" type="number"
+        @input="updateKey"
+        :min="min"
+        v-model="valueMinField"
+        name=""
+      >
+      <span class="filters-item__input-center"></span>
+      <input
+        class="filters-item__input"
+        :step="step"
+        type="number"
+        @input="updateKey"
+        :max="max"
+        v-model="valueMaxField"
+        name=""
+      >
     </div>
     <MultiRangeSlider
       :min="min"
       :max="max"
-      :step="1"
+      :step="step"
       :ruler="false"
       :label="false"
       :minValue="Number(valueMinField)"
       :maxValue="Number(valueMaxField)"
       :key="barKey"
-      @input="UpdateValues"
+      @input="updateValuesRange"
     />
   </div>
 </template>
@@ -41,23 +53,34 @@ export default {
     max: {
       type: Number,
     },
-    title: {
-      type: String,
+    step: {
+      type: Number,
     },
-    className: {
+    nameField: {
       type: String,
     },
   },
   methods: {
     updateKey() {
-      this.barKey = Number(this.valueMinField + this.valueMaxField);
+      this.barKey = this.valueMinField + this.valueMaxField;
     },
-    UpdateValues(e) {
+    updateValuesRange(e) {
       this.valueMinField = e.minValue;
       this.valueMaxField = e.maxValue;
     },
+    changeFields(value, mode) {
+      this.$emit('changeValueField', { name: this.nameField, value, mode });
+    },
   },
   components: { MultiRangeSlider },
+  watch: {
+    valueMinField(value) {
+      this.changeFields(value, 'min');
+    },
+    valueMaxField(value) {
+      this.changeFields(value, 'max');
+    },
+  },
 };
 </script>
 
@@ -66,6 +89,9 @@ export default {
     &__input {
       border: 1px solid #D8D8D8;
       border-radius: 5px;
+
+      font-size: 16px;
+      color: #2C323A;
 
       width: 80px;
       height: 40px;
@@ -92,15 +118,21 @@ export default {
     }
   }
 
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+  }
+
   .filters-bar__item__content {
     margin-bottom: 10px;
   }
   .multi-range-slider {
     all: initial !important;
   }
-  .bar {
-    width: calc(100% - 24px);
-    margin-left: 8px !important;
+  .thumb-right:before {
+    transform: translateX(-10px);
   }
   .min-value, .max-value {
     color: transparent !important;
@@ -117,6 +149,7 @@ export default {
     background-color: #70D24E !important;
     box-shadow: none !important;
     margin-top: -13px !important;
+    margin: -14px;
   }
   .bar-left {
     padding: 1px 0 !important;
