@@ -32,6 +32,14 @@ export default {
       const list = this.rooms.filter((room) => room.isChecked).map((room) => room.name);
       this.$emit('updateRooms', { list });
     },
+    resetValue() {
+      this.rooms = this.rooms.map((room) => {
+        room.isChecked = false;
+        return room;
+      });
+
+      this.changeCheckbox();
+    },
   },
   watch: {
     roomsList(newValue) {

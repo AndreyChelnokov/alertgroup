@@ -8,9 +8,11 @@ export default {
   props: {
     classMode: {
       type: String,
+      required: true,
     },
     content: {
-      type: String,
+      type: [String, HTMLElement],
+      required: true,
     },
     typeButton: {
       type: String,
@@ -30,6 +32,7 @@ export default {
     font-weight: 700;
     font-size: 14px;
     text-transform: uppercase;
+    cursor: pointer;
 
     &:hover {
       background-color: #65bd46;

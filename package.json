@@ -10,7 +10,10 @@
   "dependencies": {
     "core-js": "^3.6.5",
     "multi-range-slider-vue": "^1.0.5",
+    "range-slider-vue": "^1.0.3",
     "vue": "^2.6.11",
+    "vue-custom-range-slider": "^0.2.3",
+    "vue-simple-range-slider": "^0.1.10",
     "vuex": "^3.4.0"
   },
   "devDependencies": {

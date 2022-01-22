@@ -32,33 +32,33 @@ export default new Vuex.Store({
 
       if (filters.floor) {
         if (filters.floor.max) {
-          apartmentList = apartmentList.filter((apartment) => apartment.floor <= filters.floor.max);
+          apartmentList = apartmentList.filter((item) => item.floor <= filters.floor.max);
         }
         if (filters.floor.min) {
-          apartmentList = apartmentList.filter((apartment) => apartment.floor >= filters.floor.min);
+          apartmentList = apartmentList.filter((item) => item.floor >= filters.floor.min);
         }
       }
 
       if (filters.price) {
         if (filters.price.max) {
-          apartmentList = apartmentList.filter((apartment) => apartment.price / 1000000 <= filters.price.max);
+          apartmentList = apartmentList.filter((item) => item.price / 1000000 <= filters.price.max);
         }
         if (filters.price.min) {
-          apartmentList = apartmentList.filter((apartment) => apartment.price / 1000000 >= filters.price.min);
+          apartmentList = apartmentList.filter((item) => item.price / 1000000 >= filters.price.min);
         }
       }
 
       if (filters.square) {
         if (filters.square.max) {
-          apartmentList = apartmentList.filter((apartment) => apartment.square <= filters.square.max);
+          apartmentList = apartmentList.filter((item) => item.square <= filters.square.max);
         }
         if (filters.square.min) {
-          apartmentList = apartmentList.filter((apartment) => apartment.square >= filters.square.min);
+          apartmentList = apartmentList.filter((item) => item.square >= filters.square.min);
         }
       }
 
       if (filters.rooms && filters.rooms.length) {
-        apartmentList = apartmentList.filter((apartment) => filters.rooms.indexOf(apartment.rooms) >= 0);
+        apartmentList = apartmentList.filter((item) => filters.rooms.indexOf(item.rooms) >= 0);
       }
 
       return apartmentList;
@@ -66,17 +66,21 @@ export default new Vuex.Store({
     getListUniqueRooms(state) {
       const rooms = state.apartmentList.map((apartment) => apartment.rooms);
       const uniqueRooms = rooms.filter((e, i) => rooms.indexOf(e) === i);
-      return uniqueRooms.map((roomName) => {
-        return { name: roomName, isChecked: false };
-      });
+      return uniqueRooms.map((roomName) => ({ name: roomName, isChecked: false }));
     },
     getMaxValueByParams: (state) => (params) => {
       if (state.apartmentList.length) {
         return Math.max(...state.apartmentList.map((apartment) => apartment[params]));
       }
+
+      return undefined;
     },
     getMinValueByParams: (state) => (params) => {
-      return Math.min(...state.apartmentList.map((apartment) => apartment[params]));
+      if (state.apartmentList.length) {
+        return Math.min(...state.apartmentList.map((apartment) => apartment[params]));
+      }
+
+      return undefined;
     },
   },
 });

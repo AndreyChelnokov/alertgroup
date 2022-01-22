@@ -4,6 +4,7 @@
     <FiltersItemWrap :class-name="'rooms'">
       <template v-slot:title>КОМНАТЫ</template>
       <FiltersItemCheckbox
+        ref="rooms"
         :rooms-list="rooms.uniqueList"
         @updateRooms="updateValueRooms"
       />
@@ -12,6 +13,7 @@
     <FiltersItemWrap :class-name="'floor'">
       <template v-slot:title>ЭТАЖ</template>
       <FiltersItemField
+        ref="floor"
         v-if="maxFloor"
         :max="maxFloor"
         :min="minFloor"
@@ -24,10 +26,12 @@
     <FiltersItemWrap :class-name="'square'">
       <template v-slot:title>ПЛОЩАДЬ, м<sup>2</sup></template>
       <FiltersItemField
+        ref="square"
         v-if="maxSquare"
         :max="maxSquare"
         :min="minSquare"
-        :step=".01"
+        :step=".1"
+        :float="true"
         :name-field="'square'"
         @changeValueField="updateValueFieldForm"
       />
@@ -36,10 +40,12 @@
     <FiltersItemWrap :class-name="'price'">
       <template v-slot:title>СТОИМОСТЬ, млн. р.</template>
       <FiltersItemField
+        ref="price"
         v-if="maxPrice"
         :max="maxPrice"
         :min="minPrice"
-        :step=".01"
+        :step=".1"
+        :float="true"
         :name-field="'price'"
         @changeValueField="updateValueFieldForm"
       />
@@ -51,7 +57,7 @@
         :class-mode="'filters-bar__button'"
         :content="'Фильтровать'"
       />
-      <div class="filters-bar__reset">сбросить фильтр</div>
+      <button @click="resetFilters" class="filters-bar__reset">сбросить фильтр</button>
     </div>
 
   </form>
@@ -97,6 +103,14 @@ export default {
       this.formValue.rooms = prop.list;
     },
     sendFilter() {
+      this.$store.commit('SET_CURRENT_FILTERS', JSON.parse(JSON.stringify(this.formValue)));
+    },
+    resetFilters() {
+      this.$refs.floor.resetValue();
+      this.$refs.square.resetValue();
+      this.$refs.price.resetValue();
+      this.$refs.rooms.resetValue();
+
       this.$store.commit('SET_CURRENT_FILTERS', JSON.parse(JSON.stringify(this.formValue)));
     },
   },
@@ -206,6 +220,12 @@ export default {
       margin-top: 15px;
       position: relative;
 
+      cursor: pointer;
+
+      padding: 0;
+      border: 0;
+      background: transparent;
+
       &:after {
         width: 100%;
         height: 2px;
@@ -221,16 +241,7 @@ export default {
       width: 202px;
       margin-top: 20px;
       height: 40px;
-    }
-
-    &__item-title {
-      font-size: 12px;
-      color: #2C323A;
-      font-weight: 700;
-      text-align: left;
-      margin-bottom: 2px;
-      display: block;
-      height: 18px;
+      cursor: pointer;
     }
   }
 </style>

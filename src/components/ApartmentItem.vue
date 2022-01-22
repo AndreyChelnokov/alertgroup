@@ -8,7 +8,7 @@
     </div>
     <div class="apartment-item__image-wrap image-wrap">
       <div class="image-wrap__number">№{{ apartment.number }}</div>
-      <img :src="'assets' + apartment.plan" alt="" class="apartment-item__image">
+      <img :src="preview" alt="" class="apartment-item__image">
     </div>
     <div class="apartment-item__footer">
       <div class="apartment-item__price">{{ price }}р.</div>
@@ -21,6 +21,7 @@
 </template>
 
 <script>
+import previewImage from '../assets/img/9eeb90d9c7aeeed41fb41c0b5e383013.jpg'
 import { declOfNum } from '../utils';
 import AlertgroupButton from './AlertgroupButton.vue';
 
@@ -30,6 +31,7 @@ export default {
     apartment: Object,
   },
   computed: {
+    preview() { return previewImage; },
     price() {
       return new Intl.NumberFormat().format(this.apartment.price);
     },
