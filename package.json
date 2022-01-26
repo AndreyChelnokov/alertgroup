@@ -10,10 +10,7 @@
   "dependencies": {
     "core-js": "^3.6.5",
     "multi-range-slider-vue": "^1.0.5",
-    "range-slider-vue": "^1.0.3",
     "vue": "^2.6.11",
-    "vue-custom-range-slider": "^0.2.3",
-    "vue-simple-range-slider": "^0.1.10",
     "vuex": "^3.4.0"
   },
   "devDependencies": {
@@ -23,6 +20,7 @@
     "@vue/cli-service": "~4.5.0",
     "@vue/eslint-config-airbnb": "^5.0.2",
     "babel-eslint": "^10.1.0",
+    "copy-webpack-plugin": "^10.2.1",
     "eslint": "^6.7.2",
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-vue": "^6.2.2",

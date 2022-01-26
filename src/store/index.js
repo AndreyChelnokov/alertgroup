@@ -20,7 +20,7 @@ export default new Vuex.Store({
     getApartmentList(context) {
       const url = 'http://localhost:8080/data.json';
 
-      fetch(url) // todo Локальный адрес
+      fetch(url)
         .then((res) => res.json())
         .then((res) => context.commit('SET_APARTMENTS_LIST', res));
     },

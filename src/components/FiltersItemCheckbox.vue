@@ -25,6 +25,7 @@ export default {
   props: {
     roomsList: {
       type: Array,
+      required: true,
     },
   },
   methods: {
@@ -40,11 +41,63 @@ export default {
 
       this.changeCheckbox();
     },
+
+    updateRoomsList() {
+      this.rooms = this.roomsList;
+    },
   },
   watch: {
-    roomsList(newValue) {
-      this.rooms = newValue;
+    roomsList() {
+      this.updateRoomsList();
     },
+  },
+  mounted() {
+    this.updateRoomsList();
   },
 };
 </script>
+
+<style lang="scss">
+  .checkbox-item {
+    cursor: pointer;
+
+    &:not(:last-child) {
+      margin-right: 4px;
+    }
+
+    .checkbox-input {
+      display: none;
+      & + .checkbox-span {
+        display: block;
+
+        font-size: 16px;
+        line-height: 40px;
+        text-align: center;
+        color: #2C323A;
+        font-weight: 700;
+
+        width: 47px;
+        height: 40px;
+        border: 1px solid #D8D8D8;
+        border-radius: 5px;
+      }
+
+      &:checked {
+        & + .checkbox-span {
+          color: #fff;
+          background-color: #70D24E;
+          border-color: #70D24E;
+        }
+      }
+    }
+  }
+
+  @media(max-width:820px) {
+    .checkbox-item .checkbox-input + .checkbox-span {
+      font-size: 12px;
+      line-height: 30px;
+      width: 35px;
+      height: 30px;
+    }
+  }
+</style>

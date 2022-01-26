@@ -1,66 +1,82 @@
 <template>
-  <form @submit.prevent="sendFilter" class="filters-bar">
-
-    <FiltersItemWrap :class-name="'rooms'">
-      <template v-slot:title>КОМНАТЫ</template>
-      <FiltersItemCheckbox
-        ref="rooms"
-        :rooms-list="rooms.uniqueList"
-        @updateRooms="updateValueRooms"
-      />
-    </FiltersItemWrap>
-
-    <FiltersItemWrap :class-name="'floor'">
-      <template v-slot:title>ЭТАЖ</template>
-      <FiltersItemField
-        ref="floor"
-        v-if="maxFloor"
-        :max="maxFloor"
-        :min="minFloor"
-        :step="1"
-        :name-field="'floor'"
-        @changeValueField="updateValueFieldForm"
-      />
-    </FiltersItemWrap>
-
-    <FiltersItemWrap :class-name="'square'">
-      <template v-slot:title>ПЛОЩАДЬ, м<sup>2</sup></template>
-      <FiltersItemField
-        ref="square"
-        v-if="maxSquare"
-        :max="maxSquare"
-        :min="minSquare"
-        :step=".1"
-        :float="true"
-        :name-field="'square'"
-        @changeValueField="updateValueFieldForm"
-      />
-    </FiltersItemWrap>
-
-    <FiltersItemWrap :class-name="'price'">
-      <template v-slot:title>СТОИМОСТЬ, млн. р.</template>
-      <FiltersItemField
-        ref="price"
-        v-if="maxPrice"
-        :max="maxPrice"
-        :min="minPrice"
-        :step=".1"
-        :float="true"
-        :name-field="'price'"
-        @changeValueField="updateValueFieldForm"
-      />
-    </FiltersItemWrap>
-
-    <div class="filters-bar__result-buttons">
-      <AlertgroupButton
-        :typeButton="'submit'"
-        :class-mode="'filters-bar__button'"
-        :content="'Фильтровать'"
-      />
-      <button @click="resetFilters" class="filters-bar__reset">сбросить фильтр</button>
+  <section class="filters-bar">
+    <div class="container">
+      <div class="filters-bar__toggle">
+        <div class="filters-bar__toggle-button-wrap" @click="toggleHiddenFilters">
+          <AlertgroupButton
+            content="Расширенный поиск"
+            class-mode="filters-bar__toggle-button"
+            type="button"
+          />
+        </div>
+      </div>
     </div>
+    <div class="container">
+      <form v-if="hiddenFilters" @submit.prevent="sendFilter" class="filters-bar__form">
 
-  </form>
+        <FiltersItemWrap :class-name="'rooms'">
+          <template v-slot:title>КОМНАТЫ</template>
+          <FiltersItemCheckbox
+            ref="rooms"
+            :rooms-list="rooms.uniqueList"
+            @updateRooms="updateValueRooms"
+          />
+        </FiltersItemWrap>
+
+        <FiltersItemWrap :class-name="'floor'">
+          <template v-slot:title>ЭТАЖ</template>
+          <FiltersItemField
+            ref="floor"
+            v-if="maxFloor"
+            :max="maxFloor"
+            :min="minFloor"
+            :step="1"
+            :name-field="'floor'"
+            @changeValueField="updateValueFieldForm"
+          />
+        </FiltersItemWrap>
+
+        <FiltersItemWrap :class-name="'square'">
+          <template v-slot:title>ПЛОЩАДЬ, м<sup>2</sup></template>
+          <FiltersItemField
+            ref="square"
+            v-if="maxSquare"
+            :max="maxSquare"
+            :min="minSquare"
+            :step=".1"
+            :float="true"
+            :name-field="'square'"
+            @changeValueField="updateValueFieldForm"
+          />
+        </FiltersItemWrap>
+
+        <FiltersItemWrap :class-name="'price'">
+          <template v-slot:title>СТОИМОСТЬ, млн. р.</template>
+          <FiltersItemField
+            ref="price"
+            v-if="maxPrice"
+            :max="maxPrice"
+            :min="minPrice"
+            :step=".1"
+            :float="true"
+            :name-field="'price'"
+            @changeValueField="updateValueFieldForm"
+          />
+        </FiltersItemWrap>
+
+        <div class="filters-bar__result-buttons">
+          <AlertgroupButton
+            :typeButton="'submit'"
+            :class-mode="'filters-bar__button'"
+            :content="'Фильтровать'"
+          />
+          <button @click="resetFilters" class="filters-bar__reset">сбросить фильтр</button>
+        </div>
+
+      </form>
+    </div>
+  </section>
+
 </template>
 
 <script>
@@ -75,6 +91,7 @@ export default {
   name: 'filtersBar',
   data() {
     return {
+      hiddenFilters: true,
       rooms: {
         uniqueList: [],
       },
@@ -96,6 +113,9 @@ export default {
     };
   },
   methods: {
+    toggleHiddenFilters() {
+      this.hiddenFilters = !this.hiddenFilters;
+    },
     updateValueFieldForm(prop) {
       this.formValue[prop.name][prop.mode] = prop.value;
     },
@@ -104,6 +124,10 @@ export default {
     },
     sendFilter() {
       this.$store.commit('SET_CURRENT_FILTERS', JSON.parse(JSON.stringify(this.formValue)));
+
+      if (window.innerWidth <= 676) {
+        this.hiddenFilters = false;
+      }
     },
     resetFilters() {
       this.$refs.floor.resetValue();
@@ -156,41 +180,6 @@ export default {
 </script>
 
 <style lang="scss">
-  .checkbox-item {
-    cursor: pointer;
-
-    &:not(:last-child) {
-      margin-right: 4px;
-    }
-
-    .checkbox-input {
-      display: none;
-      & + .checkbox-span {
-        display: block;
-
-        font-size: 16px;
-        line-height: 40px;
-        text-align: center;
-        color: #2C323A;
-        font-weight: 700;
-
-        width: 47px;
-        height: 40px;
-        border: 1px solid #D8D8D8;
-        border-radius: 5px;
-      }
-
-      &:checked {
-        & + .checkbox-span {
-          color: #fff;
-          background-color: #70D24E;
-          border-color: #70D24E;
-        }
-      }
-    }
-  }
-
-
   .filters-item {
     &__content-checkbox {
       display: flex;
@@ -201,9 +190,16 @@ export default {
   .filters-bar {
     margin-top: 72px;
     margin-bottom: 23px;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
+
+    &__toggle-button-wrap {
+      display: none;
+    }
+
+    &__form {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
 
     &__result-buttons {
       display: flex;
@@ -242,6 +238,94 @@ export default {
       margin-top: 20px;
       height: 40px;
       cursor: pointer;
+    }
+  }
+
+  @media(max-width:1190px) {
+    .filters-bar__form {
+      flex-wrap: wrap;
+      justify-content: center;
+
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    .filters-item {
+      width: 33%;
+      justify-content: center;
+      flex-grow: initial;
+
+      margin-bottom: 20px;
+    }
+    .filters-item:nth-child(1) {
+      order: 2;
+    }
+    //.filters-item:nth-child(4) .filters-item__between {
+    //  display: none;
+    //}
+    .filters-item__between {
+      display: none;
+    }
+    .filters-bar__result-buttons {
+      order: 3;
+    }
+  }
+
+  @media(max-width:820px) {
+    .filters-bar {
+      &__button {
+        width: 170px;
+        margin-top: 20px;
+        font-size: 12px;
+        height: 30px;
+        cursor: pointer;
+      }
+
+      &__reset {
+        margin-top: 9px;
+      }
+    }
+  }
+
+  @media(max-width:676px) {
+    .filters-bar {
+      position: relative;
+
+      &__form {
+        justify-content: flex-start;
+        background: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        position: absolute;
+        z-index: 99;
+        top: calc(100% + 20px);
+        left: 10px;
+        width: calc(100% - 20px);
+        border: 1px solid #eee;
+      }
+    }
+
+    .filters-item {
+      justify-content: flex-start;
+      width: auto;
+      margin-right: 30px;
+    }
+    .filters-bar__toggle-button-wrap {
+      display: block;
+    }
+    .filters-bar__toggle-button {
+      height: 30px;
+      padding: 0 30px;
+    }
+  }
+
+  @media(max-width:510px) {
+    .filters-bar {
+      margin-top: 30px;
+      margin-bottom: 20px;
+
+      &__toggle-button {
+        font-size: 12px;
+      }
     }
   }
 </style>

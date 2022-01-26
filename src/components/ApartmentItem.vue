@@ -1,5 +1,5 @@
 <template>
-  <div v-if="apartment" class="apartment-item">
+  <div v-if="apartment" class="apartment-item" :class="className">
     <div class="apartment-item__header">
       <div class="apartment-item__header_left">{{ apartment.floor }} этаж</div>
       <div class="apartment-item__header_right">
@@ -21,14 +21,21 @@
 </template>
 
 <script>
-import previewImage from '../assets/img/9eeb90d9c7aeeed41fb41c0b5e383013.jpg'
+import previewImage from '../assets/img/9eeb90d9c7aeeed41fb41c0b5e383013.jpg';
 import { declOfNum } from '../utils';
 import AlertgroupButton from './AlertgroupButton.vue';
 
 export default {
   name: 'ApartmentItem',
   props: {
-    apartment: Object,
+    apartment: {
+      type: Object,
+      required: true,
+    },
+    className: {
+      type: String,
+      default: 'list-item',
+    },
   },
   computed: {
     preview() { return previewImage; },
@@ -41,7 +48,7 @@ export default {
     },
     sculptedRoomName() {
       return declOfNum(this.apartment.rooms, ['комната', 'комнаты', 'комнат']);
-    }
+    },
   },
   components: {
     AlertgroupButton,
@@ -56,7 +63,6 @@ export default {
     box-shadow: 0px 5px 20px rgba(86, 86, 86, 0.05);
     border-radius: 10px;
     padding: 0 15px;
-    margin-top: 30px;
     background-color: #fff;
 
     overflow: hidden;
@@ -64,10 +70,6 @@ export default {
     max-height: 365px;
     display: flex;
     flex-direction: column;
-
-    &:not(:nth-child(4n)) {
-      margin-right: 30px;
-    }
 
     &.active,
     &:hover {

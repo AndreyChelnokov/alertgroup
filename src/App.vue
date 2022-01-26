@@ -3,11 +3,13 @@
 
     <div class="wrap">
       <div class="wrap__content">
-        <div class="container">
-          <div class="wrap__title">Lorem ipsum dolor sit</div>
-          <FiltersBar/>
-          <ApartmentList/>
-        </div>
+        <header>
+          <div class="container">
+            <h1 class="wrap__title">Lorem ipsum dolor sit</h1>
+          </div>
+        </header>
+        <FiltersBar/>
+        <ApartmentList/>
       </div>
     </div>
 
@@ -36,6 +38,7 @@ export default {
 
 body {
   background-color: #313131;
+  overflow: hidden;
 }
 
 .container {
@@ -45,8 +48,7 @@ body {
 }
 
 .wrap {
-  max-height: 1760px;
-  margin: 80px 80px;
+  max-height: 100vh;
   border-radius: 10px;
   padding: 30px;
   background-color: #fff;
@@ -55,12 +57,18 @@ body {
     border-radius: 10px;
     background-color: #F8F8F8;
     padding-top: 51px;
+    padding-bottom: 100px;
+
+    max-height: calc(100vh - 220px);
+    overflow: scroll;
+    box-sizing: border-box;
   }
 
   &__title {
     font-size: 34px;
     font-weight: 500;
     text-transform: uppercase;
+    margin: 0;
   }
 }
 
@@ -70,5 +78,37 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  padding: 80px;
+}
+
+@media(max-width:1550px) {
+  #app {
+    padding: 30px;
+  }
+  .wrap {
+    padding: 20px;
+
+    &__content {
+      padding-bottom: 50px;
+      max-height: calc(100vh - 110px);
+    }
+  }
+}
+@media(max-width:676px) {
+  .wrap__title {
+    font-size: 27px;
+  }
+}
+@media(max-width:510px) {
+  #app {
+    padding: 5px;
+  }
+  .wrap {
+    padding: 5px;
+  }
+  .wrap__content {
+    padding-bottom: 30px;
+    max-height: calc(100vh - 30px);
+  }
 }
 </style>

@@ -192,4 +192,25 @@ export default {
     box-shadow: none !important;
     background: #D8D8D8 !important;
   }
+
+  @media(max-width:820px) {
+    .filters-item__input {
+      border: 1px solid #D8D8D8;
+      border-radius: 5px;
+      font-size: 13px;
+      color: #2C323A;
+      width: 60px;
+      height: 30px;
+      text-align: center;
+    }
+  }
+
+  @media(max-width:676px) {
+    .multi-range-slider {
+      display: none !important;
+    }
+    .filters-item__content-inputs {
+      margin-bottom: 0;
+    }
+  }
 </style>

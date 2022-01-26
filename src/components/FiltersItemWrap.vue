@@ -64,4 +64,10 @@ export default {
       }
     }
   }
+
+  @media(max-width:676px) {
+    .filters-item__content {
+      margin-bottom: 0;
+    }
+  }
 </style>
